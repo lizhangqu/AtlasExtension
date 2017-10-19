@@ -1,0 +1,50 @@
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    jcenter()
+}
+configurations {
+    provided
+}
+idea {
+    module {
+        scopes.PROVIDED.plus += [configurations.provided]
+    }
+}
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+sourceSets {
+    main {
+        groovy.srcDirs = ['src/main/groovy']
+        java.srcDirs = ['src/main/java']
+        resources.srcDirs = ['src/main/resources']
+    }
+}
+
+dependencies {
+    compile localGroovy()
+    compile gradleApi()
+    provided "com.android.tools.build:gradle:2.3.3"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'io.github.lizhangqu:core-publish:1.0.2'
+    }
+}
+
+
+apply plugin: 'core.publish'
+
+release {
+    versionKey = 'PROJECT_POM_VERSION'
+}
